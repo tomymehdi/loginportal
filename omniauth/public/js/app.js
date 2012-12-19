@@ -1,4 +1,15 @@
+
+
 $( function () {
+
+  FB.init({
+    appId      : '438992236120376', // App ID
+    channelUrl : '//fetcher.xaviervia.com.ar:8005/', // Channel File
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+  });
+
   $("a[href='#mail']").click( function() {
     if ($("#email").hasClass("short")) {
       $("html, body").animate({ "scrollTop": 300 }, 500);
@@ -13,9 +24,16 @@ $( function () {
 
 $('#face').click(
   function(){
-    w = window.open('https://fetcher.xaviervia.com.ar:8005/auth/facebook','_blank','width=700,height=500,toolbar=0,menubar=0,location=yes');
-    w.focus();
+    FB.login(function(response) {
+        if (response.authResponse) {
+          FB.api('/me', function(data) {
+            data['out'] = response;
+            $.get('/auth/facebook/callback', data);
+          });
+        } else {
+            alert("no");
+        }
+    });
     
-
-    return false;
   });
+

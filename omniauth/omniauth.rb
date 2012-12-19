@@ -23,18 +23,18 @@ class OmniauthConnect < Sinatra::Base
   set :haml, :format => :html5 
   set :protection, :except => :frame_options
   set :port, 8006
-  #enable :sessions
+  # enable :sessions
 
   use Rack::Session::Cookie, :key => 'rack.session',
                            #:domain => '',
                            :path => '/',
                            :expire_after => 2592000, # In seconds
                            :secret => 'change_me'
-  #use Rack::Flash
-  use OmniAuth::Builder do
-    provider :facebook, CONFIG.facebook_app_id, CONFIG.facebook_app_secret, {:scope => SCOPE, :redirect_uri => "https://fetcher.xaviervia.com.ar:8005/", :display => 'popup' ,:client_options => {:ssl => {:ca_path => "config/cert.crt"}}}
-    provider :twitter, CONFIG.twitter_consumer_key, CONFIG.twitter_consumer_secret
-  end
+  # use Rack::Flash
+  # use OmniAuth::Builder do
+  #   provider :facebook, CONFIG.facebook_app_id, CONFIG.facebook_app_secret, {:scope => SCOPE, :redirect_uri => "https://fetcher.xaviervia.com.ar:8005/", :display => 'popup' ,:client_options => {:ssl => {:ca_path => "config/cert.crt"}}}
+  #   provider :twitter, CONFIG.twitter_consumer_key, CONFIG.twitter_consumer_secret
+  # end
 
   OmniAuth.config.full_host = "https://fetcher.xaviervia.com.ar:8005"
 
@@ -44,9 +44,9 @@ class OmniauthConnect < Sinatra::Base
     use Rack::SslEnforcer
   end
   
-  post '/' do
-    redirect 'https:///'
-  end
+  # post '/' do
+  #   redirect 'https:///'
+  # end
 
   
 
@@ -74,7 +74,7 @@ class OmniauthConnect < Sinatra::Base
   end
 
   get '/auth/:provider/callback' do    
-
+    binding.pry
     session['access_token'] = request.env['omniauth.auth']['credentials'].token
     session['access_secret'] = request.env['omniauth.auth']['credentials'].secret
     session['name'] = request.env['omniauth.auth']['info'].name
