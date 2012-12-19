@@ -13,9 +13,7 @@ $( function () {
 
 $('#face').click(
   function(){
-    w = window.open('https://fetcher.xaviervia.com.ar:8005/auth/facebook','_blank','width=700,height=500,toolbar=0,menubar=0,location=yes');
-    w.focus();
     
-
+    "https://fetcher.xaviervia.com.ar:8005/auth/facebook"
     return false;
   });
