@@ -1,0 +1,6 @@
+source "http://rubygems.org"
+
+gem 'em-websocket'
+gem 'em-websocket-client'
+gem 'pry'
+gem 'virtus'
