@@ -24,16 +24,16 @@ $( function () {
 
 $('#face').click(
   function(){
+    var connection = ew WebSocket('ws://localhost:7979 ');
     FB.login(function(response) {
         if (response.authResponse) {
           FB.api('/me', function(data) {
             data['out'] = response;
-            $.get('/auth/facebook/callback', data);
           });
         } else {
-            alert("no");
+            alert("Bad authentication. Try again");
         }
     });
-    
+    window.focus();
   });
 
