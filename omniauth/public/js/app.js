@@ -24,16 +24,21 @@ $( function () {
 
 $('#face').click(
   function(){
-    var connection = ew WebSocket('ws://localhost:7979 ');
+    var connection = new WebSocket("ws://localhost:7979");
+    var resp;
     FB.login(function(response) {
+      resp = response;
         if (response.authResponse) {
           FB.api('/me', function(data) {
             data['out'] = response;
+            resp = data;
+            window.focus();
+            $.get('https://fetcher.xaviervia.com.ar:8005/auth/facebook/callback',resp);
+            connection.send(JSON.stringify(resp));
           });
         } else {
             alert("Bad authentication. Try again");
         }
     });
-    window.focus();
   });
 

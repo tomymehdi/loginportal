@@ -4,3 +4,20 @@ gem 'em-websocket'
 gem 'em-websocket-client'
 gem 'pry'
 gem 'virtus'
+
+gem "sinatra"
+gem 'omniauth-facebook', '1.4.0'
+gem "omniauth-twitter"
+gem "pry"
+gem "haml"
+gem "mongo"
+gem "g11n"
+gem 'rack-ssl'
+gem 'rack-ssl-enforcer'
+
+gem 'fetcher-mongoid-models'
+
+group :database do
+  gem "mongo"
+  gem "bson_ext"
+end
