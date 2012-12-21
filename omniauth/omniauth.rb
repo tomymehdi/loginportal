@@ -8,6 +8,7 @@ require 'pry'
 require 'haml'
 require 'mongo'
 require 'g11n'
+require 'fetcher-mongoid-models'
 
 SCOPE = 'email,read_stream,publish_stream,manage_pages'
 
@@ -38,7 +39,7 @@ class OmniauthConnect < Sinatra::Base
 
   OmniAuth.config.full_host = "https://fetcher.xaviervia.com.ar:8005"
 
-  
+  Fetcher::Mongoid::Models::Db.new "./config/db.yaml"
 
   configure :production do
     use Rack::SslEnforcer
@@ -72,8 +73,19 @@ class OmniauthConnect < Sinatra::Base
     session['link'] = request.params['link']
     session['email'] = request.params['email']
     session['location'] = request.params['locale']
+    session['expiration_time'] = request.params['out']['authResponse']['expiresIn']
+    session['provider'] = 'facebook'
 
     #insertar a la bd
+    persoUsern = PersonUser.new(
+      :provider => session['provider'],
+      :itemId => session['id'],
+      :name => session['name'],
+      :url => session['link'],
+      :accessToken => session['access_token']
+    )
+    personUser.save
+
   end
 
   get '/logout' do
