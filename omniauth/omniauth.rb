@@ -65,9 +65,15 @@ class OmniauthConnect < Sinatra::Base
 
 
   get '/auth/facebook/callback' do
-    binding.pry
-    session['access_token'] = 'hol'    
-    redirect 'https:///'
+    session['access_token'] = request.params['out']['authResponse']['accessToken']
+    session['signed_request'] = request.params['out']['authResponse']['signedRequest']
+    session['id'] = request.params['id']
+    session['name'] = request.params['name']
+    session['link'] = request.params['link']
+    session['email'] = request.params['email']
+    session['location'] = request.params['locale']
+
+    #insertar a la bd
   end
 
   get '/logout' do
@@ -77,22 +83,6 @@ class OmniauthConnect < Sinatra::Base
 
   get '/auth/failure' do
     'You Must Allow the application to access your data !!!'
-  end
-
-  helpers do
-
-    def not_in_db? uid
-      person_User_Collection.find( "Item#id" => uid ).to_a.empty?
-    end    
-    def client
-      @client ||= Mongo::Connection.new("mongocfg1.fetcher")
-    end
-    def db
-      db ||= client['test']
-    end  
-    def person_User_Collection
-      coll ||= db['http://schema.org/Person/User']
-    end
   end
 
 end
